@@ -16,6 +16,17 @@ use App\Http\Controllers\ReporteController;
 
 use App\Http\Controllers\PedidoController;
 
+use App\Http\Controllers\formularioController;
+use App\Models\formulario;
+
+Route::get('/formularios', [formularioController::class, 'index'])->name('formulario.index');
+Route::get('/formularios/crear', [formularioController::class, 'create'])->name('formulario.create');
+Route::post('/formularios', [formularioController::class, 'store'])->name('formulario.store');
+Route::get('/formularios/{id}', [formularioController::class, 'show'])->name('formulario.show');
+Route::get('/formularios/{id}/editar', [formularioController::class, 'edit'])->name('formulario.edit');
+Route::put('/formularios/{id}', [formularioController::class, 'update'])->name('formulario.update');
+Route::delete('/formularios/{id}', [formularioController::class, 'destroy'])->name('formulario.destroy');
+
 
 /*
 |--------------------------------------------------------------------------
