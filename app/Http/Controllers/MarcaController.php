@@ -31,6 +31,55 @@ class MarcaController extends Controller
 
     public function store(Request $request)
     {
+        // Validar la entrada
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'foto_frontal' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_trasera' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Crear el usuario
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Asignar el rol de cliente
+        $user->roles()->sync([Role::where('title', 'cliente')->first()->id]);
+
+        $input = $request->all();
+        
+        // Guardar la foto frontal si se subió
+        if ($fotoFrontal = $request->file('foto_frontal')) {
+            $rutaGuardarImg = 'storage/clientes/';
+            $nombreFotoFrontal = date('YmdHis') . "_frontal." . $fotoFrontal->getClientOriginalExtension();
+            $fotoFrontal->move($rutaGuardarImg, $nombreFotoFrontal);
+            $input['foto_frontal'] = "$nombreFotoFrontal";
+        }
+
+        // Guardar la foto trasera si se subió
+        if ($fotoTrasera = $request->file('foto_trasera')) {
+            $rutaGuardarImg = 'storage/clientes/';
+            $nombreFotoTrasera = date('YmdHis') . "_trasera." . $fotoTrasera->getClientOriginalExtension();
+            $fotoTrasera->move($rutaGuardarImg, $nombreFotoTrasera);
+            $input['foto_trasera'] = "$nombreFotoTrasera";
+        }
+
+        // Crear el cliente relacionado
+        Cliente::create([
+            'user_id' => $user->id,
+            'foto_frontal' => $input['foto_frontal'] ?? null,
+            'foto_trasera' => $input['foto_trasera'] ?? null,
+        ]);
+
+        return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente');
+    }
+
+    public function Wstore0(Request $request)
+    {
 
         $request->validate([
 

@@ -56,7 +56,7 @@
                                 <x-jet-dropdown-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                                     Usuarios
                                 </x-jet-dropdown-link>
-                                <x-jet-dropdown-link href="{{ route('users.clientes') }}" :active="request()->routeIs('users.*')">
+                                <x-jet-dropdown-link href="{{ route('clientes.index') }}" :active="request()->routeIs('clientes.*')">
                                     Clientes
                                 </x-jet-dropdown-link>
                                 

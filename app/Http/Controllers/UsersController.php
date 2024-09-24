@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Cliente;
 use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -40,6 +41,23 @@ class UsersController extends Controller
         $user = User::create($data);
         $user->roles()->sync($request->input('roles', []));
 
+        // Si el rol seleccionado es cliente, crear una entrada en la tabla cliente
+        $roleClienteId = Role::where('title', 'cliente')->pluck('id')->first();
+        if (in_array($roleClienteId, $request->input('roles', []))) {
+            Cliente::create([
+                'user_id' => $user->id,
+                'foto_frontal' => null, // Fotos en null al crear
+                'foto_trasera' => null,
+            ]);
+        }
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Creacion de perfil',
+                'details' => 'El perfil del usuario ' . $user->name . ' ha sido creado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('users.index');
     }
 
@@ -87,15 +105,42 @@ class UsersController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
+
         if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']); // Encripta la contraseña
+            $data['password'] = Hash::make($data['password']);
         }
 
         $user->update($data);
+
         $user->roles()->sync($request->input('roles', []));
+
+        $roleClienteId = Role::where('title', 'cliente')->pluck('id')->first();
+
+        // Si el rol "cliente" ya no está seleccionado, verificar y eliminar el registro de la tabla "cliente"
+        if (!in_array($roleClienteId, $request->input('roles', []))) {
+            // Buscar el registro del cliente relacionado con este usuario
+            $cliente = Cliente::where('user_id', $user->id)->first();
+            
+            // Si el cliente existe, eliminarlo
+            if ($cliente) {
+                $cliente->delete();
+            }
+        }
+
+        // Registrar la modificación en la bitácora si el usuario está autenticado
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Modificacion de perfil',
+                'details' => 'El perfil del usuario ' . $user->name . ' ha sido modificado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
 
         return redirect()->route('users.index');
     }
+
+
 
     public function destroy(User $user)
     {
@@ -103,17 +148,15 @@ class UsersController extends Controller
 
         $user->delete();
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Eliminacion del perfil',
+                'details' => 'El perfil del usuario ' . $user->name . ' ha sido eliminado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('users.index');
     }
 
-    public function clientes()
-    {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $clientes = User::whereHas('roles', function ($query) {
-            $query->where('title', 'cliente');
-        })->get();
-
-        return view('users.clientes', compact('clientes'));
-    }
 }

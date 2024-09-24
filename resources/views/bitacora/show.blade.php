@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitácora - Jenecheru</title>
+    <title>Bitácora - INMOVIVA</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body {
@@ -113,10 +113,10 @@
             @if ($first)
                 <div class="invoice-header">
                     <div class="company-details">
-                        <p><strong>Jenecheru</strong></p>
-                        <p>Dirección de la Empresa</p>
-                        <p>Teléfono: +123 456 789</p>
-                        <p>Email: info@jenecheru.com</p>
+                        <p><strong>Inmoviva</strong></p>
+                        <p>Dirección de la Inmobiliaria</p>
+                        <p>Teléfono: +123 456 787</p>
+                        <p>Email: info@inmoviva.com</p>
                     </div>
                     <div class="invoice-title">
                         <h1>Bitácora</h1>
@@ -161,7 +161,7 @@
         <button onclick="goBack()" class="btn-back">Volver Atrás</button>
     </div>
     <div class="footer">
-        <p>&copy; 2024 Jenecheru. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Inmoviva. Todos los derechos reservados.</p>
     </div>
     <script>
         function printInvoice() {
