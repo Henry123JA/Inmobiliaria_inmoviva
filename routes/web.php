@@ -19,6 +19,7 @@ use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\ArticulosController;
 use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\formularioController;
+use App\Http\Controllers\TipoPropiedadController;
 
 Route::get('/formularios', [formularioController::class, 'index'])->name('formulario.index');
 Route::get('/formularios/crear', [formularioController::class, 'create'])->name('formulario.create');
@@ -60,6 +61,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 });
 
 Route::resource('agentes', AgenteController::class);
+Route::resource('tipo-propiedades', TipoPropiedadController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
