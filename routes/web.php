@@ -11,6 +11,7 @@ use App\Http\Controllers\AgenteController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ClientesController;
 
 use App\Http\Controllers\ReporteController;
 
@@ -74,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/marca', MarcaController::class);
     Route::get('/users/clientes', [UsersController::class, 'clientes'])->name('users.clientes');
 
+    Route::resource('clientes', ClientesController::class);
 
     // Para Livewire componentes normalmente no se definen de esta manera
     Route::resource('articulos', Articulos::class);
