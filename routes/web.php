@@ -1,23 +1,26 @@
 <?php
 
+use App\Models\formulario;
 use App\Http\Livewire\Articulos;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\AgenteController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\BitacoraController;
-use App\Http\Controllers\ArticulosController;
-use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\ClientesController;
+
 use App\Http\Controllers\ReporteController;
 
-use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\BitacoraController;
 
+use App\Http\Controllers\ArticulosController;
+use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\formularioController;
-use App\Models\formulario;
+use App\Http\Controllers\TipoPropiedadController;
 
 Route::get('/formularios', [formularioController::class, 'index'])->name('formulario.index');
 Route::get('/formularios/crear', [formularioController::class, 'create'])->name('formulario.create');
@@ -51,7 +54,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     // Asegúrate de que todos estos métodos existan en los controladores correspondientes
     Route::get('/users/{user}/bitacora', [UsersController::class, 'showBitacora'])->name('users.bitacora');
     Route::get('/users/clientes', [UsersController::class, 'clientes'])->name('users.clientes');
+
+    //agentes
+    //Route::get('/users/agentes', [AgenteController::class, 'agentes'])->name('users.agentes');
+    //Route::resource('agentes', AgenteController::class);
+    
 });
+
+Route::resource('agentes', AgenteController::class);
+Route::resource('tipo-propiedades', TipoPropiedadController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -81,15 +92,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/reporte', [ReporteController::class, 'export'])->name('export');
 
 
-// Rutas para listar, crear, almacenar, mostrar, editar, actualizar y eliminar ventas
-Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
-Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
-Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
-Route::get('/ventas/{venta}', [VentaController::class, 'show'])->name('ventas.show');
-Route::get('/ventas/{venta}/edit', [VentaController::class, 'edit'])->name('ventas.edit');
-Route::put('/ventas/{venta}', [VentaController::class, 'update'])->name('ventas.update');
-Route::delete('/ventas/{venta}', [VentaController::class, 'destroy'])->name('ventas.destroy');
-Route::get('/ventas/print/{periodo}/{fecha?}', [VentaController::class, 'print'])->name('ventas.print');
+    // Rutas para listar, crear, almacenar, mostrar, editar, actualizar y eliminar ventas
+    Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
+    Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
+    Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
+    Route::get('/ventas/{venta}', [VentaController::class, 'show'])->name('ventas.show');
+    Route::get('/ventas/{venta}/edit', [VentaController::class, 'edit'])->name('ventas.edit');
+    Route::put('/ventas/{venta}', [VentaController::class, 'update'])->name('ventas.update');
+    Route::delete('/ventas/{venta}', [VentaController::class, 'destroy'])->name('ventas.destroy');
+    Route::get('/ventas/print/{periodo}/{fecha?}', [VentaController::class, 'print'])->name('ventas.print');
 
     //carrito de compras  
     Route::post('add-to-cart', [ArticulosController::class, 'addToCart'])->name('add_to_cart');
@@ -111,10 +122,9 @@ Route::get('/ventas/print/{periodo}/{fecha?}', [VentaController::class, 'print']
     Route::get('/bitacora/{userId}', [BitacoraController::class, 'showBitacora'])->name('show.bitacora');
 
     //pedidos
-    
+
     Route::get('/pedidos/{id}/reporte-ganancia', [PedidoController::class, 'reporte_ganancia'])->name('pedidos.reporte_ganancia');
     Route::get('/pedidos/actualizar-stock-minimo', [PedidoController::class, 'actualizarStockMinimoForm'])->name('pedidos.actualizarStockMinimoForm');
     Route::post('/pedidos/actualizar-stock-minimo', [PedidoController::class, 'setStockMinimo'])->name('pedidos.setStockMinimo');
     Route::resource('pedidos', PedidoController::class);
-    
 });
