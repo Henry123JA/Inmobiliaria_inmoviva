@@ -1,15 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Show Cliente
+            Vista Cliente
         </h2>
     </x-slot>
 
     <div>
         <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8">
-            <div class="block mb-8">
-                <a href="{{ route('clientes.index') }}" class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">Back to list</a>
-            </div>
+            
             <div class="flex flex-col">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -57,7 +55,7 @@
                                     </th>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 bg-white divide-y divide-gray-200">
                                         @if ($cliente->foto_frontal)
-                                            <img src="{{ asset('clientes_fotos/' . $cliente->foto_frontal) }}" alt="Foto Frontal" class="w-32 h-32">
+                                            <img src="{{ asset('clientes_fotos/' . $cliente->foto_frontal) }}" alt="Foto Frontal" class="w-32 h-32 sm:w-24 sm:h-24">
                                         @else
                                             No hay foto frontal disponible
                                         @endif
@@ -69,7 +67,7 @@
                                     </th>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 bg-white divide-y divide-gray-200">
                                         @if ($cliente->foto_trasera)
-                                            <img src="{{ asset('clientes_fotos/' . $cliente->foto_trasera) }}" alt="Foto Trasera" class="w-32 h-32">
+                                            <img src="{{ asset('clientes_fotos/' . $cliente->foto_trasera) }}" alt="Foto Trasera" class="w-32 h-32 sm:w-24 sm:h-24">
                                         @else
                                             No hay foto trasera disponible
                                         @endif
@@ -81,8 +79,9 @@
                 </div>
             </div>
             <div class="block mt-8">
-                <a href="{{ route('clientes.index') }}" class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">Back to list</a>
+                <a href="{{ route('clientes.index') }}" class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">Volver a la lista</a>
             </div>
         </div>
     </div>
 </x-app-layout>
+

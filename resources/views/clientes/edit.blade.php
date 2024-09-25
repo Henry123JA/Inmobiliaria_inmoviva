@@ -13,7 +13,6 @@
                     @method('PUT')
 
                     <div class="shadow overflow-hidden sm:rounded-md">
-
                         {{-- Nombre del Cliente --}}
                         <div class="px-4 py-5 bg-white sm:p-6">
                             <label for="name" class="block font-medium text-sm text-gray-700">Nombre</label>
@@ -36,12 +35,11 @@
                             </div>
                         </div>
 
-
                         {{-- Foto Frontal Actual --}}
                         <div class="grid grid-cols-1 mt-5 mx-7">
                             <label for="foto_frontal" class="block font-medium text-sm text-gray-700">Foto Frontal Actual</label>
                             @if ($cliente->foto_frontal)
-                                <img src="{{ asset('clientes_fotos/' . $cliente->foto_frontal) }}" class="w-32 h-32" id="fotoFrontalSeleccionada">
+                                <img src="{{ asset('clientes_fotos/' . $cliente->foto_frontal) }}" class="w-32 h-32 sm:w-24 sm:h-24" id="fotoFrontalSeleccionada">
                             @else
                                 <p>No hay foto frontal disponible</p>
                             @endif
@@ -65,7 +63,7 @@
                         <div class="grid grid-cols-1 mt-5 mx-7">
                             <label for="foto_trasera" class="block font-medium text-sm text-gray-700">Foto Trasera Actual</label>
                             @if ($cliente->foto_trasera)
-                                <img src="{{ asset('clientes_fotos/' . $cliente->foto_trasera) }}" class="w-32 h-32" id="fotoTraseraSeleccionada">
+                                <img src="{{ asset('clientes_fotos/' . $cliente->foto_trasera) }}" class="w-32 h-32 sm:w-24 sm:h-24" id="fotoTraseraSeleccionada">
                             @else
                                 <p>No hay foto trasera disponible</p>
                             @endif
@@ -85,9 +83,10 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-center md:gap-8 gap-4 pt-5 pb-5">
-                            <a href="{{ route('clientes.index') }}" class="w-auto bg-gray-500 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2">Cancelar</a>
-                            <button type="submit" class="w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2">Guardar</button>
+                        {{-- Botones de acción --}}
+                        <div class="flex flex-col sm:flex-row items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6 space-y-4 sm:space-y-0 sm:space-x-4">
+                            <a href="{{ route('clientes.index') }}" class="w-full sm:w-auto bg-gray-500 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2 text-center">Cancelar</a>
+                            <button type="submit" class="w-full sm:w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2">Guardar</button>
                         </div>
                     </div>
                 </form>

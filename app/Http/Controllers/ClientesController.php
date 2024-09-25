@@ -77,7 +77,7 @@ class ClientesController extends Controller
         if (auth()->check()) {
             Bitacora::create([
                 'action' => 'Creacion de perfil',
-                'details' => 'El perfil del usuario ' . $cliente->user->name . ' ha sido creado',
+                'details' => 'El perfil del usuario ' . $user->name . ' ha sido creado',
                 'user_id' => auth()->user()->id,
                 'ip_address' => request()->ip(),
             ]);

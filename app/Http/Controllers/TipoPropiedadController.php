@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TipoPropiedad;
+use App\Models\Bitacora;
 
 class TipoPropiedadController extends Controller
 {
@@ -41,8 +42,16 @@ class TipoPropiedadController extends Controller
             'descripcion' => 'required|string',
         ]);
 
-        TipoPropiedad::create($request->all());
+        $tpropiedad = TipoPropiedad::create($request->all());
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Creacion de Tipo de Propiedad',
+                'details' => 'El tipo de propiedad ' . $tpropiedad->nombre . ' ha sido creado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('tipo-propiedades.index')->with('success', 'Tipo de propiedad creado exitosamente.');
     }
 
@@ -55,6 +64,14 @@ class TipoPropiedadController extends Controller
     public function show($id)
     {
         $tipoPropiedad = TipoPropiedad::findOrFail($id);
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Visualizacion del tipo de propiedad',
+                'details' => 'El tipo de propiedad ' . $tipoPropiedad->nombre . ' ha sido visto',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return view('tipo_propiedades.show', compact('tipoPropiedad'));
     }
 
@@ -88,6 +105,14 @@ class TipoPropiedadController extends Controller
 
         $tipoPropiedad->update($request->all());
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Modificacion del tipo de propiedad',
+                'details' => 'El tipo de propiedad ' . $tipoPropiedad->nombre . ' ha sido modificado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('tipo-propiedades.index')->with('success', 'Tipo de propiedad actualizado exitosamente.');
     }
 
@@ -102,6 +127,14 @@ class TipoPropiedadController extends Controller
         $tipoPropiedad = TipoPropiedad::findOrFail($id);
         $tipoPropiedad->delete();
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Eliminacion del tipo de propiedad',
+                'details' => 'El tipo de propiedad ' . $tipoPropiedad->nombre . ' ha sido eliminado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('tipo-propiedades.index')->with('success', 'Tipo de propiedad eliminado exitosamente.');
     }
 }

@@ -62,9 +62,10 @@
                             @enderror
                         </div>
 
-                        <div class="flex items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6">
-                            <a href="{{ route('clientes.index') }}" class='w-auto bg-gray-500 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2'>Cancelar</a>
-                            <button type="submit" class="w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2">Guardar</button>
+                        <!-- Botones ajustados para pantallas pequeñas -->
+                        <div class="flex flex-col sm:flex-row items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6 space-y-4 sm:space-y-0 sm:space-x-4">
+                            <a href="{{ route('clientes.index') }}" class="w-full sm:w-auto bg-gray-500 hover:bg-gray-700 rounded-lg shadow-xl font-medium text-white px-4 py-2 text-center">Cancelar</a>
+                            <button type="submit" class="w-full sm:w-auto bg-purple-500 hover:bg-purple-700 rounded-lg shadow-xl font-medium text-white px-4 py-2">Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -85,4 +86,5 @@
         });
     });
 </script>
+
 

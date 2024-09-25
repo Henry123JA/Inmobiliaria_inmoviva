@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agente;
 use Illuminate\Http\Request;
+use App\Models\Bitacora;
 
 class AgenteController extends Controller
 {
@@ -42,8 +43,16 @@ class AgenteController extends Controller
             'telefono' => 'required',
         ]);
 
-        Agente::create($request->all());
+        $agen = Agente::create($request->all());
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Creacion de Agente',
+                'details' => 'El agente ' . $agen->nombre . ' ha sido creado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('agentes.index')->with('success', 'Agente creado exitosamente.');
     }
 
@@ -56,6 +65,15 @@ class AgenteController extends Controller
     public function show($id)
     {
         $agente = Agente::findOrFail($id);
+
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Visualizacion de Agente',
+                'details' => 'El agente ' . $agente->nombre . ' ha sido visto',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return view('agentes.show', compact('agente'));
     }
 
@@ -91,6 +109,14 @@ class AgenteController extends Controller
         
         $agente->update($request->all());
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Modificacion de Agente',
+                'details' => 'El agente ' . $agente->nombre . ' ha sido modificado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('agentes.index')->with('success', 'Agente actualizado exitosamente.');
     }
     /**
@@ -103,7 +129,14 @@ class AgenteController extends Controller
     {
         $agente = Agente::findOrFail($id);
         $agente->delete();
-
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Eliminacion de Agente',
+                'details' => 'El agente ' . $agente->nombre . ' ha sido eliminado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('agentes.index')->with('success', 'Agente eliminado exitosamente.');
     }
 }

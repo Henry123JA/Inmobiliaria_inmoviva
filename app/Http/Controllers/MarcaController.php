@@ -29,7 +29,7 @@ class MarcaController extends Controller
         return view('marca.create');
     }
 
-    public function store(Request $request)
+    public function Sstore(Request $request)
     {
         // Validar la entrada
         $request->validate([
@@ -78,7 +78,7 @@ class MarcaController extends Controller
         return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente');
     }
 
-    public function Wstore0(Request $request)
+    public function store(Request $request)
     {
 
         $request->validate([

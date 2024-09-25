@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\formulario;
+use App\Models\Bitacora;
 
 class formularioController extends Controller
 {
@@ -31,8 +32,16 @@ class formularioController extends Controller
         ]);
 
         // Crear un nuevo registro en la tabla de formularios
-        formulario::create($validatedData);
+        $formu = formulario::create($validatedData);
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Creacion del formulario',
+                'details' => 'El formulario de ' . $formu->nombre . ' ha sido creado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         // Redireccionar con un mensaje de éxito
         return redirect()->route('formulario.index')->with('success', 'formulario creado con éxito.');
     }
@@ -41,6 +50,14 @@ class formularioController extends Controller
     {
         // Mostrar un formulario específico
         $formulario = formulario::findOrFail($id);
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Visualizacion del formulario',
+                'details' => 'El formulario de ' . $formulario->nombre . ' ha sido visto',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return view('formulario.show', compact('formulario'));
     }
 
@@ -65,6 +82,14 @@ class formularioController extends Controller
         $formulario = formulario::findOrFail($id);
         $formulario->update($validatedData);
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Modificacion de formulario',
+                'details' => 'El formulario de ' . $formulario->nombre . ' ha sido modificado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         // Redireccionar con un mensaje de éxito
         return redirect()->route('formulario.index')->with('success', 'formulario actualizado con éxito.');
     }
@@ -75,6 +100,14 @@ class formularioController extends Controller
         $formulario = formulario::findOrFail($id);
         $formulario->delete();
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Eliminacion del formulario',
+                'details' => 'El formulario de ' . $formulario->nombre . ' ha sido eliminado',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('formulario.index')->with('success', 'formulario eliminado con éxito.');
     }
 }
