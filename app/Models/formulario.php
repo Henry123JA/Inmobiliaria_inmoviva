@@ -19,7 +19,8 @@ class Formulario extends Model
         'correo',
         'telefono',
         'mensaje',
-        'tipo_de_propiedad_id'
+        'tipo_de_propiedad_id',
+        'fecha_envio'
     ];
 
     // Relación con el modelo TipoDePropiedad

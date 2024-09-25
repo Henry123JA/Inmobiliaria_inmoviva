@@ -24,23 +24,23 @@ class formularioController extends Controller
     return view('formulario.create', compact('tiposDePropiedad'));
     }
 
-    public function store(Request $request)
-    {
-        // Validar los datos del formulario
-        $validatedData = $request->validate([
-        'nombre' => 'required|string|max:255',
-        'correo' => 'required|email|max:255',
-        'telefono' => 'required|string|max:15',
-        'mensaje' => 'required|string',
-        'tipo_de_propiedad_id' => 'required|exists:tipo_propiedads,id', // Validar que exista el tipo de propiedad
+        public function store(Request $request)
+        {
+            // Validar los datos del formulario
+            $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'correo' => 'required|email|max:255',
+            'telefono' => 'required|string|max:15',
+            'mensaje' => 'required|string',
+            'tipo_de_propiedad_id' => 'required|exists:tipo_propiedads,id', // Validar que exista el tipo de propiedad
         ]);
-
-        // Crear un nuevo registro en la tabla de formularios
-        formulario::create($validatedData);
-
-        // Redireccionar con un mensaje de éxito
-        return redirect()->route('formulario.index')->with('success', 'formulario creado con éxito.');
-    }
+ // Crear un nuevo registro en la tabla de formularios
+ $formulario = formulario::create(array_merge($validatedData, [
+    'fecha_envio' => now(), // Agregar la fecha de envío
+        ]));
+            // Redireccionar con un mensaje de éxito
+            return redirect()->route('formulario.index')->with('success', 'formulario creado con éxito.');
+        }
 
     public function show($id)
     {
