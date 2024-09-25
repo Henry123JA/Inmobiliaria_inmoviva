@@ -15,6 +15,7 @@
                 <p class="card-text"><strong>Correo:</strong> {{ $formulario->correo }}</p>
                 <p class="card-text"><strong>Teléfono:</strong> {{ $formulario->telefono }}</p>
                 <p class="card-text"><strong>Mensaje:</strong> {{ $formulario->mensaje }}</p>
+                <p class="card-text"><strong>Tipo de Propiedad:</strong> {{ $formulario->tipoPropiedad->nombre ?? 'No especificado' }}</p> <!-- Añadido para mostrar el tipo de propiedad -->
                 <a href="{{ route('formulario.index') }}" class="btn btn-primary">Volver a la lista</a>
             </div>
         </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TipoPropiedad;
 
 class Formulario extends Model
 {
@@ -18,7 +19,14 @@ class Formulario extends Model
         'correo',
         'telefono',
         'mensaje',
+        'tipo_de_propiedad_id'
     ];
+
+    // Relación con el modelo TipoDePropiedad
+    public function tipoPropiedad()
+    {
+        return $this->belongsTo(TipoPropiedad::class, 'tipo_de_propiedad_id');
+    }
 }
 
 

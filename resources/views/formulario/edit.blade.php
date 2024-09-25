@@ -30,6 +30,23 @@
             </div>
 
             <div class="mb-3">
-                <label for="mensaje" class="form-label">Mensaje</label>
+                <label for="mensaje" class="form-label">Preferencia</label>
                 <input type="text" class="form-control" id="mensaje" name="mensaje" value="{{ old('mensaje', $formulario->mensaje) }}">
             </div>
+
+            <div class="mb-3">
+                <label for="tipo_de_propiedad">Selecciona el Tipo de Propiedad</label>
+                <select name="tipo_de_propiedad_id" id="tipo_de_propiedad" class="form-select">
+                    @foreach($tiposDePropiedad as $tipo)
+                        <option value="{{ $tipo->id }}" {{ $tipo->id == $formulario->tipo_de_propiedad_id ? 'selected' : '' }}>
+                            {{ $tipo->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+    </div>
+</body>
+</html>

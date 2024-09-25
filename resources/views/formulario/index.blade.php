@@ -16,8 +16,7 @@
             </div>
         @endif
 
-        <a href="{{ route('formulario.create') }}" class="btn btn-primary mb-3">Crear Formulario
-        </a>
+        <a href="{{ route('formulario.create') }}" class="btn btn-primary mb-3">Crear Formulario</a>
 
         <table class="table table-bordered">
             <thead>
@@ -26,8 +25,9 @@
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
-                    <th>Mensaje</th>
+                    <th>Preferencia</th> <!-- Cambié "Preferencia" por "Mensaje" para que coincida con el controlador -->
                     <th>Acciones</th>
+                    <th>Tipo de Propiedad</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +47,7 @@
                                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                             </form>
                         </td>
+                        <td>{{ $formulario->tipoPropiedad->nombre ?? 'N/A' }}</td> <!-- Mostrar el nombre del tipo de propiedad -->
                     </tr>
                 @endforeach
             </tbody>

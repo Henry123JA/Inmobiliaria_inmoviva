@@ -43,13 +43,19 @@
             </div>
 
             <div class="mb-3">
-                <label for="mensaje" class="form-label">Mensaje</label>
+                <label for="mensaje" class="form-label">Preferencia</label>
                 <textarea class="form-control @error('mensaje') is-invalid @enderror" id="mensaje" name="mensaje" rows="5">{{ old('mensaje') }}</textarea>
                 @error('mensaje')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-
+            <label for="tipo_de_propiedad">Selecciona el Tipo de Propiedad</label>
+            <select name="tipo_de_propiedad_id" id="tipo_de_propiedad">
+                @foreach($tiposDePropiedad as $tipo)
+                    <option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                @endforeach
+            </select>
+        
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
     </div>
