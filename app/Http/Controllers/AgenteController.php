@@ -38,17 +38,39 @@ class AgenteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:agentes',
-            'telefono' => 'required',
+            'telefono' => 'required|numeric|digits_between:7,15',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
+
+            'correo.required' => 'El correo es obligatorio.',
+            'correo.email' => 'El correo debe ser una dirección válida.',
+            'correo.unique' => 'El correo ya está registrado.',
+
+            'telefono.required' => 'El teléfono es obligatorio.',
+            'telefono.numeric' => 'El teléfono debe ser un número.',
+            'telefono.digits_between' => 'El teléfono debe tener entre 7 y 15 dígitos.',
         ]);
 
-        $agen = Agente::create($request->all());
+        $agente = Agente::create([
+            'nombre' => $request->nombre,
+            'correo' => $request->correo,
+            'telefono' => $request->telefono,
+        ]);
+
+        $agente = Agente::create([
+            'nombre' => $request->nombre,
+            'correo' => $request->correo,
+            'telefono' => $request->telefono,
+        ]);
 
         if (auth()->check()) {
             Bitacora::create([
                 'action' => 'Creacion de Agente',
-                'details' => 'El agente ' . $agen->nombre . ' ha sido creado',
+                'details' => 'El agente ' . $agente->nombre . ' ha sido creado',
                 'user_id' => auth()->user()->id,
                 'ip_address' => request()->ip(),
             ]);
@@ -98,16 +120,19 @@ class AgenteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
         $agente = Agente::findOrFail($id);
-        
+
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|string|max:255',
             'correo' => 'required|email|unique:agentes,correo,' . $agente->id,
-            'telefono' => 'required',
+            'telefono' => 'required|numeric|digits_between:7,15',
         ]);
-        
-        $agente->update($request->all());
+
+        $agente->update([
+            'nombre' => $request->nombre,
+            'correo' => $request->correo,
+            'telefono' => $request->telefono,
+        ]);
 
         if (auth()->check()) {
             Bitacora::create([
@@ -119,6 +144,7 @@ class AgenteController extends Controller
         }
         return redirect()->route('agentes.index')->with('success', 'Agente actualizado exitosamente.');
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -129,6 +155,7 @@ class AgenteController extends Controller
     {
         $agente = Agente::findOrFail($id);
         $agente->delete();
+
         if (auth()->check()) {
             Bitacora::create([
                 'action' => 'Eliminacion de Agente',

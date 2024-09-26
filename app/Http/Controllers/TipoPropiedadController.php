@@ -39,10 +39,19 @@ class TipoPropiedadController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string',
+            'descripcion' => 'nullable|string',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
+            
+            'descripcion.string' => 'La descripción debe ser una cadena de texto.',
         ]);
 
-        $tpropiedad = TipoPropiedad::create($request->all());
+        $tpropiedad = TipoPropiedad::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+        ]);
 
         if (auth()->check()) {
             Bitacora::create([
@@ -98,12 +107,21 @@ class TipoPropiedadController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string',
+            'descripcion' => 'nullable|string',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
+            
+            'descripcion.string' => 'La descripción debe ser una cadena de texto.',
         ]);
 
         $tipoPropiedad = TipoPropiedad::findOrFail($id);
 
-        $tipoPropiedad->update($request->all());
+        $tipoPropiedad->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+        ]);
 
         if (auth()->check()) {
             Bitacora::create([
