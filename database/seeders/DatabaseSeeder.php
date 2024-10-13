@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-       
+
             PermissionsTableSeeder::class,
             RolesTableSeeder::class,
             PermissionRoleTableSeeder::class,
@@ -23,7 +23,10 @@ class DatabaseSeeder extends Seeder
             RoleUserTableSeeder::class,
             MarcaSeeder::class,
             propiedadSeeder::class,
-         //   ArticuloSeeder::class,          
+            // Registrar el seeder de Agentes
+            AgenteSeeder::class,
+            TipoPropiedadSeeder::class,
+            //   ArticuloSeeder::class,          
         ]);
     }
 }
