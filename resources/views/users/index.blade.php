@@ -5,6 +5,19 @@
         </h2>
     </x-slot>
 
+
+    @if (session('success'))
+    <div id="success-message"
+        class="fixed top-14 right-5 bg-green-500 text-white text-center py-2 px-4 rounded shadow-lg z-50">
+        {{ session('success') }}
+    </div>
+@endif
+<script>
+    setTimeout(function() {
+        document.getElementById('success-message').style.display = 'none';
+    }, 2000); // Ocultar el mensaje después de 2 seg
+</script>
+
     <div>
         <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="block mb-8">
@@ -33,9 +46,10 @@
                                         Roles
                                     </th>
                                     
-                                    <th scope="col" class="w-[300px] px-6 py-3 bg-gray-50">
-                                        
-                                    </th>
+                                    <th scope="col"
+                                    class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Acciones
+                                </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -59,21 +73,28 @@
 
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             @foreach ($user->roles as $role)
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-300 text-green-800">
                                                     {{ $role->title }}
                                                 </span>
                                             @endforeach
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900 mb-2 mr-2">View</a>
-                                            <a href="{{ route('users.bitacora', $user->id) }}" class="text-purple-600 hover:text-purple-900 mb-2 mr-2">Bitacora</a>
-                                            <a href="{{ route('users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2">Edit</a>
-                                            <form class="inline-block" action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="submit" class="text-red-600 hover:text-red-900 mb-2 mr-2" value="Delete">
-                                            </form>
+                                            <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900 mb-2 mr-2"> <i class="fas fa-eye text-xl"></i> </a>
+                                            <a href="{{ route('users.bitacora', $user->id) }}" class="text-purple-600 hover:text-purple-900 mb-2 mr-2"> <i class="fas fa-book text-xl"></i> </a>
+                                            <a href="{{ route('users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2"> <i class="fas fa-edit text-xl"></i> </a>
+                                            <form class="inline-block"
+                                                        action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                                        id="delete{{ $user->id }}">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                        <button type="button"
+                                                            class="text-red-600 hover:text-red-900 mb-2 mr-2"
+                                                            onclick="confirmDelete({{ $user->id }})">
+                                                            <i class="fas fa-trash text-xl"></i>
+                                                        </button>
+                                                    </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -87,3 +108,26 @@
         </div>
     </div>
 </x-app-layout>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Deseas eliminar este registro.",
+            icon: 'warning',
+            showCancelButton: true,
+
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete' + id).submit();
+                Swal.fire(
+                    'Eliminado!',
+                    'El Usuario ha sido eliminado.',
+                    'success'
+                )
+            }
+        });
+    }
+</script>

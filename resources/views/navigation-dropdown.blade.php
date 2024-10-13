@@ -35,7 +35,7 @@
                     </div>
                 @endcan --}}
                 <!-- Usuarios Dropdown -->
-                @can('user_access')
+                @can('admin_access')
                     <div class="hidden sm:flex sm:items-center sm:ml-10">
                         <x-jet-dropdown align="left">
                             <x-slot name="trigger">
@@ -62,12 +62,16 @@
                                 <x-jet-dropdown-link href="{{ route('agentes.index') }}" :active="request()->routeIs('agentes.index')">
                                     Agentes
                                 </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('users.propietarios') }}" :active="request()->routeIs('users.*')">
+                                    Propietarios
+                                </x-jet-dropdown-link>
+                                
                             </x-slot>
                         </x-jet-dropdown>
                     </div>
                 @endcan
 
-                @can('user_access')
+                @can('admin_access')
                     <div class="hidden sm:flex sm:items-center sm:ml-10">
                         <x-jet-dropdown align="left">
                             <x-slot name="trigger">
@@ -88,13 +92,17 @@
                                 <x-jet-dropdown-link href="{{ route('tipo-propiedades.index') }}" :active="request()->routeIs('tipo-propiedades.index')">
                                     Tipo de Propiedades
                                 </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('propiedades.index') }}" :active="request()->routeIs('propiedades.*')">
+                                    Propiedades
+                                </x-jet-dropdown-link>
                             </x-slot>
+                            
                         </x-jet-dropdown>
                     </div>
                 @endcan
 
               <!-- Formulario Dropdown -->   
-                @can('user_access')
+                @canany(['admin_access','cliente_access'])
                     <div class="hidden sm:flex sm:items-center sm:ml-10">
                         <x-jet-dropdown align="left">
                             <x-slot name="trigger">
@@ -116,11 +124,10 @@
                                     Formulario
                                 </x-jet-dropdown-link>
 
-                                
                             </x-slot>
                         </x-jet-dropdown>
                     </div>
-                @endcan
+                @endcanany
                 {{--
                 <!-- Marcas Dropdown -->
                 @can('user_access')
@@ -331,7 +338,7 @@
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
         </div>
-        @can('user_access')
+        @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">
                 <x-jet-responsive-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                     Usuarios
@@ -339,7 +346,7 @@
             </div>
         @endcan
 
-        @can('user_access')
+        @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">
                 <x-jet-responsive-nav-link href="{{ route('clientes.index') }}" :active="request()->routeIs('clientes.*')">
                     Clientes
@@ -347,7 +354,15 @@
             </div>
         @endcan
 
-        @can('user_access')
+        {{-- @can('user_access')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('users.propietarios') }}" :active="request()->routeIs('users.*')">
+                Propietario
+            </x-jet-responsive-nav-link>
+        </div>
+    @endcan         --}}
+
+        @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">
                 <x-jet-responsive-nav-link href="{{ route('agentes.index') }}" :active="request()->routeIs('agentes.index')">
                     Agentes
@@ -363,7 +378,7 @@
             </div>
         @endcan
         --}}
-        @can('user_access')
+        @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">
                 <x-jet-responsive-nav-link href="{{ route('tipo-propiedades.index') }}" :active="request()->routeIs('tipo-propiedades.index')">
                     Tipo de Propiedades
@@ -371,7 +386,7 @@
             </div>
         @endcan
         
-        @can('user_access')
+        @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">
                 <x-jet-responsive-nav-link href="{{ route('formulario.index') }}" :active="request()->routeIs('users.*')">
                     Formulario

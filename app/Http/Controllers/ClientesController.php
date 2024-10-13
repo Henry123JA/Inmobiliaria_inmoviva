@@ -15,7 +15,6 @@ class ClientesController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $clientes = Cliente::with('user')->get();
         return view('clientes.index', compact('clientes'));
@@ -23,7 +22,6 @@ class ClientesController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('clientes.create');
     }
@@ -92,7 +90,6 @@ class ClientesController extends Controller
 
     public function show(Cliente $cliente)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if (auth()->check()) {
             Bitacora::create([
@@ -107,7 +104,6 @@ class ClientesController extends Controller
 
     public function edit(Cliente $cliente)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('clientes.edit', compact('cliente'));
     }
@@ -163,7 +159,6 @@ class ClientesController extends Controller
 
     public function destroy(Cliente $cliente)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // Eliminar tanto el cliente como el usuario
 

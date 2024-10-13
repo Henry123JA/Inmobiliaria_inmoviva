@@ -17,7 +17,6 @@ class UsersController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $users = User::with('roles')->get();
 
@@ -26,7 +25,6 @@ class UsersController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
 
@@ -58,12 +56,12 @@ class UsersController extends Controller
                 'ip_address' => request()->ip(),
             ]);
         }
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success','Usuario creado exitosamente');
+
     }
 
     public function show(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if (auth()->check()) {
             Bitacora::create([
                 'action' => 'Visualización de perfil',
@@ -77,7 +75,6 @@ class UsersController extends Controller
 
     public function showBitacora(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $bitacoras = $user->bitacoras; // Asume que 'bitacoras' es la relación definida en el modelo User
         if (auth()->check()) {
@@ -93,7 +90,6 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
 
@@ -137,14 +133,13 @@ class UsersController extends Controller
             ]);
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success','Usuario modificado exitosamente');
     }
 
 
 
     public function destroy(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $user->delete();
 
@@ -156,7 +151,17 @@ class UsersController extends Controller
                 'ip_address' => request()->ip(),
             ]);
         }
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success','Usuario eliminado exitosamente');
+    }
+
+    public function propietarios()
+    {
+
+        $propietarios = User::whereHas('roles', function ($query) {
+            $query->where('title', 'propietario');
+        })->get();
+
+        return view('users.propietarios', compact('propietarios'));
     }
 
 }

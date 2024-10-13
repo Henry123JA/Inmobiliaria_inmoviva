@@ -20,6 +20,7 @@ use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\ArticulosController;
 use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\formularioController;
+use App\Http\Controllers\PropiedadController;
 use App\Http\Controllers\TipoPropiedadController;
 
 Route::get('/formularios', [formularioController::class, 'index'])->name('formulario.index');
@@ -58,6 +59,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     //agentes
     //Route::get('/users/agentes', [AgenteController::class, 'agentes'])->name('users.agentes');
     //Route::resource('agentes', AgenteController::class);
+    Route::get('/users/propietarios', [UsersController::class, 'propietarios'])->name('users.propietarios');
+    // Route::resource('/propiedades', PropiedadController::class);
+
     
 });
 
@@ -74,6 +78,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', UsersController::class);
     Route::resource('/marca', MarcaController::class);
     Route::get('/users/clientes', [UsersController::class, 'clientes'])->name('users.clientes');
+    Route::get('/users/propietarios', [UsersController::class, 'propietarios'])->name('users.propietarios');
+    Route::resource('/propiedades', PropiedadController::class);
+
 
     Route::resource('clientes', ClientesController::class);
 
