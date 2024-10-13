@@ -12,16 +12,20 @@ class PermissionsTableSeeder extends Seeder
         $permissions = [
             [
                 'id'    => 1,
-                'title' => 'user_access',
+                'title' => 'admin_access',
             ],
             [
                 'id'    => 2,
-                'title' => 'task_access',
+                'title' => 'cliente_access',
             ],
             [
                 'id'    => 3,
-                'title' => 'empleado_access',
+                'title' => 'agente_access',
             ],
+            [
+                'id'    => 4,
+                'title' => 'propietario_access',
+            ],            
         ];
 
         Permission::insert($permissions);

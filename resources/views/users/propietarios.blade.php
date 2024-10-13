@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Clientes
+            Propietarios
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="block mb-8">
                 <!-- Enlace para agregar un nuevo cliente -->
-                <a href="{{ route('users.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Agregar Cliente</a>
+                <a href="{{ route('users.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Agregar Propietario</a>
             </div>
             <div class="flex flex-col">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -33,28 +33,29 @@
                                         <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Roles
                                         </th>
-                                        <th scope="col" class="w-[300px] px-6 py-3 bg-gray-50">
+                                        <th scope="col"
+                                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Acciones
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($clientes as $cliente)
+                                    @foreach ($propietarios as $propietario)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $cliente->id }}
+                                            {{ $propietario->id }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $cliente->name }}
+                                            {{ $propietario->name }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $cliente->email }}
+                                            {{ $propietario->email }}
                                         </td>
                                         {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $cliente->email_verified_at }}
                                         </td> --}}
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            @foreach ($cliente->roles as $role)
+                                            @foreach ($propietario->roles as $role)
                                                 <span
                                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-300 text-green-800">
                                                     {{ $role->title }}
@@ -63,15 +64,21 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <!-- Enlaces para ver, editar y eliminar cliente -->
-                                            <a href="{{ route('users.show', $cliente->id) }}" class="text-blue-600 hover:text-blue-900 mb-2 mr-2">Ver</a>
-                                            <a href="{{ route('users.edit', $cliente->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2">Editar</a>
-                                            <a href="{{ route('users.bitacora', $cliente->id) }}" class="text-purple-600 hover:text-purple-900 mb-2 mr-2">Bitacora</a>
+                                            <a href="{{ route('users.show', $propietario->id) }}" class="text-blue-600 hover:text-blue-900 mb-2 mr-2"> <i class="fas fa-eye text-xl"></i> </a>
+                                            <a href="{{ route('users.edit', $propietario->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2"> <i class="fas fa-edit text-xl"></i>  </a>
+                                            <a href="{{ route('users.bitacora', $propietario->id) }}" class="text-purple-600 hover:text-purple-900 mb-2 mr-2"> <i class="fas fa-book text-xl"></i>  </a>
 
-                                            <form class="inline-block" action="{{ route('users.destroy', $cliente->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro?');">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="submit" class="text-red-600 hover:text-red-900 mb-2 mr-2" value="Eliminar">
-                                            </form>
+                                            <form class="inline-block"
+                                                        action="{{ route('users.destroy', $propietario->id) }}" method="POST"
+                                                        id="delete{{ $propietario->id }}">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                        <button type="button"
+                                                            class="text-red-600 hover:text-red-900 mb-2 mr-2"
+                                                            onclick="confirmDelete({{ $propietario->id }})">
+                                                            <i class="fas fa-trash text-xl"></i>
+                                                        </button>
+                                                    </form>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -84,3 +91,28 @@
         </div>
     </div>
 </x-app-layout>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Deseas eliminar este registro.",
+            icon: 'warning',
+            showCancelButton: true,
+
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete' + id).submit();
+                Swal.fire(
+                    'Eliminado!',
+                    'El Usuario ha sido eliminado.',
+                    'success'
+                )
+            }
+        });
+    }
+</script>
