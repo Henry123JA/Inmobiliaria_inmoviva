@@ -89,6 +89,9 @@
                                 </button>
                             </x-slot>
                             <x-slot name="content">
+                                <x-jet-dropdown-link href="{{ route('inventarios.index') }}" :active="request()->routeIs('inventarios.*')">
+                                    Inventario
+                                </x-jet-dropdown-link>
                                 <x-jet-dropdown-link href="{{ route('tipo-propiedades.index') }}" :active="request()->routeIs('tipo-propiedades.index')">
                                     Tipo de Propiedades
                                 </x-jet-dropdown-link>
@@ -385,6 +388,22 @@
                 </x-jet-responsive-nav-link>
             </div>
         @endcan
+        @can('admin_access')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('inventarios.index') }}" :active="request()->routeIs('inventarios*.')">
+                Inventario
+            </x-jet-responsive-nav-link>
+        </div>
+    @endcan
+
+
+        @can('admin_access')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('users.propietarios') }}" :active="request()->routeIs('users.*')">
+                Propietarios
+            </x-jet-responsive-nav-link>
+        </div>
+    @endcan
         
         @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">

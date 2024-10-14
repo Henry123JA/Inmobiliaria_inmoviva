@@ -20,6 +20,7 @@ use App\Http\Controllers\BitacoraController;
 use App\Http\Controllers\ArticulosController;
 use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\formularioController;
+use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\PropiedadController;
 use App\Http\Controllers\TipoPropiedadController;
 
@@ -80,6 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/users/clientes', [UsersController::class, 'clientes'])->name('users.clientes');
     Route::get('/users/propietarios', [UsersController::class, 'propietarios'])->name('users.propietarios');
     Route::resource('/propiedades', PropiedadController::class);
+    Route::resource('/inventarios', InventarioController::class);
+
 
 
     Route::resource('clientes', ClientesController::class);
