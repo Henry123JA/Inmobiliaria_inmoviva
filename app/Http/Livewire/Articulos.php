@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace app\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Articulos as Articulo;
 use App\Models\Bitacora;
+
 class Articulos extends Component
 {
     // Propiedades públicas para almacenar los datos del formulario y el estado del artículo
