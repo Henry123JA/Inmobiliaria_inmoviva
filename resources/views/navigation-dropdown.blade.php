@@ -98,6 +98,9 @@
                                 <x-jet-dropdown-link href="{{ route('propiedades.index') }}" :active="request()->routeIs('propiedades.*')">
                                     Propiedades
                                 </x-jet-dropdown-link>
+                                <x-jet-dropdown-link href="{{ route('ciudad.index') }}" :active="request()->routeIs('ciudades.*')">
+                                    Ciudad
+                                </x-jet-dropdown-link>
                             </x-slot>
                             
                         </x-jet-dropdown>
