@@ -21,7 +21,9 @@
     <div>
         <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="block mb-8">
+                @canany(['admin_access'])
                 <a href="{{ route('users.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add User</a>
+                @endcanany
             </div>
             <div class="flex flex-col">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -81,7 +83,10 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        @canany(['admin_access','agente_access'])
                                             <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900 mb-2 mr-2"> <i class="fas fa-eye text-xl"></i> </a>
+                                        @endcanany
+                                        @can(['admin_access'])
                                             <a href="{{ route('users.bitacora', $user->id) }}" class="text-purple-600 hover:text-purple-900 mb-2 mr-2"> <i class="fas fa-book text-xl"></i> </a>
                                             <a href="{{ route('users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2"> <i class="fas fa-edit text-xl"></i> </a>
                                             <form class="inline-block"
@@ -95,6 +100,7 @@
                                                             <i class="fas fa-trash text-xl"></i>
                                                         </button>
                                                     </form>
+                                        @endcan
                                         </td>
                                     </tr>
                                 @endforeach

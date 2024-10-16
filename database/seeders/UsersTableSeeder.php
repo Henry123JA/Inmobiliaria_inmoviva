@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 //'id'             => 3,
-                'name'           => 'Empleado',
+                'name'           => 'Agente',
                 'email'          => 'agente@agente.com',
                 'password'       => bcrypt('password'),
                 'remember_token' => null,
