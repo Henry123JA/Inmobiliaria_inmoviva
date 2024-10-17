@@ -213,6 +213,8 @@ a<x-app-layout>
                                                     {{ $inventario->agente->nombre ?? 'No asignado' }}
                                                 </td>
 
+          
+
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     {{ $inventario->fecha }}
                                                 </td>
