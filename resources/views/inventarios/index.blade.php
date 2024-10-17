@@ -112,6 +112,7 @@
                     <a href="{{ route('propiedades.create') }}"
                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Agregar Propiedades al Inventario</a>
                 @endcan
+                
             </div>
 
             <div class="flex flex-col">
