@@ -6,7 +6,7 @@ use App\Models\Inventario;
 use App\Models\Propiedad;
 use App\Models\TipoPropiedad;
 use App\Models\Agente;
-
+use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -62,7 +62,7 @@ class InventarioController extends Controller
         'imagen'=>$url,
         
        ]);
-       
+        
         return redirect()->route('inventarios.index')->with('success','inventario creado exitosamente');
     }
     
@@ -70,7 +70,7 @@ class InventarioController extends Controller
     {
 
         $inventario = Inventario::with(['tipoPropiedad', 'propiedad','agente'])->findOrFail($id);
-
+        
         // $inventario = Inventario::with(['categoria', 'marca', 'modelo'])->findOrFail($id);
         return view('inventarios.show', compact('inventario'));
     }
