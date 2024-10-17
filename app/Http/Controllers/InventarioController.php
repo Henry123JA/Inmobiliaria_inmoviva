@@ -54,8 +54,9 @@ class InventarioController extends Controller
             'propiedad_id' => $request->propiedad_id,
             'tipopropiedad_id' => $request->tipopropiedad_id,
             'agente_id' => $request->agente_id,
+
             'fecha' => $request->fecha,  
-            //'fecha' => Carbon::now(),
+      
             // 'tipopropiedad_id' => 'required|exists:tipoPropiedades,id',
             // 'propiedad_id' => 'required|exists:propiedades,id',
 
@@ -166,6 +167,65 @@ class InventarioController extends Controller
         $url = str_replace('storage', 'public', $inventario->imagen);
         storage::delete($url);
         return redirect()->route('inventarios.index')->with('success', 'Propiedad eliminado del inventario exitosamente');
+    }
+
+
+    public function buscarPorNombre(Request $request)
+    {
+        $search = $request->input('search');
+
+        // Verificar que se haya ingresado un término de búsqueda
+        if (!$search) {
+            return redirect()->route('inventarios.index')->with('error', 'Por favor ingresa un término de búsqueda.');
+        }
+
+        // Obtener las propiedades que coincidan con el término de búsqueda (ignorando mayúsculas/minúsculas)
+        $propiedades = Propiedad::where('nombre', 'LIKE', '%' . $search . '%')->pluck('id');
+
+        // Obtener los inventarios asociados a las propiedades encontradas
+        $inventarios = Inventario::whereIn('propiedad_id', $propiedades)->get();
+
+        // Retornar la vista con los inventarios encontrados
+        return view('inventarios.index', compact('inventarios'));
+    }
+
+    public function filtrarPropiedad(Request $request)
+    {
+        // Inicializamos la consulta en el modelo Inventario
+        $query = Inventario::query();
+
+        // Filtrar por tipo de propiedad si se ha seleccionado uno
+        if ($request->filled('buscapropiedad') && $request->buscapropiedad !== 'Todos') {
+            $tipoPropiedad = TipoPropiedad::where('nombre', $request->buscapropiedad)->first();
+            if ($tipoPropiedad) {
+                $query->where('tipopropiedad_id', $tipoPropiedad->id);
+            }
+        }
+
+        // Filtrar por superficie en el rango especificado
+        if ($request->filled('buscasuperficiedesde') || $request->filled('buscasuperficiehasta')) {
+            $desde = $request->input('buscasuperficiedesde', 0); // Valor mínimo en caso de no especificar
+            $hasta = $request->input('buscasuperficiehasta', PHP_INT_MAX); // Valor máximo en caso de no especificar
+            $query->whereBetween('superficie', [$desde, $hasta]);
+        }
+
+        // Filtrar por rango de fechas
+        if ($request->filled('buscafechadesde') || $request->filled('buscafechahasta')) {
+            $fechaDesde = $request->input('buscafechadesde', '1900-01-01');
+            $fechaHasta = $request->input('buscafechahasta', now()->format('Y-m-d'));
+            $query->whereBetween('fecha', [$fechaDesde, $fechaHasta]);
+        }
+
+        // Filtrar por estado en el modelo Inventario
+        if ($request->filled('agente') && $request->agente !== 'Todos') {
+            $query->where('estado', $request->agente);
+        }
+
+        // Ejecutar la consulta y obtener los resultados
+        $inventarios = $query->get();
+
+        // Retornar la vista con los inventarios filtrados
+        return view('inventarios.index', compact('inventarios'));
     }
 
 }
