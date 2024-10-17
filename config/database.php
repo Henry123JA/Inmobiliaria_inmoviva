@@ -61,6 +61,12 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+                // Otras configuraciones aquí...
+            'dump' => [
+                'dump_binary_path' => 'C:/xampp/mysql/bin/', // Asegúrate de que esta ruta sea correcta
+                'use_single_transaction' => true,
+                'timeout' => 60 * 5, // 5 minutos
+            ],
         ],
 
         'pgsql' => [
@@ -76,6 +82,11 @@ return [
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
+            'dump' => [
+                'dump_binary_path' => '/usr/bin/', // Ruta donde está pg_dump en tu servidor o máquina local
+                'use_single_transaction' => true,
+                'timeout' => 60 * 5, // 5 minutos
+            ],
         ],
 
         'sqlsrv' => [

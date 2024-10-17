@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Propiedad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Bitacora;
 
 class PropiedadController extends Controller
 {
@@ -31,13 +31,21 @@ class PropiedadController extends Controller
         $ruta=$request->imagen->storeAs('public/imagenes/propiedades',$nombreImagen);
         $url=Storage::url($ruta);
 
-        Propiedad::create([    
+        $Propiedad = Propiedad::create([    
         'nombre'=>$request->nombre,       
         'estado'=>$request->estado,       
         'descripcion'=>$request->descripcion,       
         'imagen'=>$url,
         
        ]);
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Creacion de Propiedad',
+                'details' => 'La propiedad ' . $Propiedad->nombre . ' ha sido creada',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('propiedades.index')->with('success','Propiedad creado exitosamente');
     }
     
@@ -45,6 +53,14 @@ class PropiedadController extends Controller
     {
 
         $propiedad = Propiedad::findOrFail($id);
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Visualizacion de Propiedad',
+                'details' => 'La propiedad ' . $propiedad->nombre . ' ha sido vista',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return view('propiedades.show', compact('propiedad'));
     }
 
@@ -90,7 +106,14 @@ class PropiedadController extends Controller
             $propiedad->save();
         }
         $propiedad=Propiedad::find($id);
-
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Modificacion de Propiedad',
+                'details' => 'La propiedad ' . $propiedad->nombre . ' ha sido modificada',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
          return redirect()->route('propiedades.index')->with('success','Propiedad modificado exitosamente');
     }
 
@@ -98,6 +121,14 @@ class PropiedadController extends Controller
     {
         $propiedad = Propiedad::find($id);    
         $propiedad->delete();
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Eliminacion de Propiedad',
+                'details' => 'La propiedad ' . $propiedad->nombre . ' ha sido eliminada',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         $url=str_replace('storage','public',$propiedad->imagen);
         storage::delete($url);
         return redirect()->route('propiedades.index')->with('success', 'Propiedad eliminado exitosamente');

@@ -61,11 +61,6 @@ class AgenteController extends Controller
             'telefono' => $request->telefono,
         ]);
 
-        $agente = Agente::create([
-            'nombre' => $request->nombre,
-            'correo' => $request->correo,
-            'telefono' => $request->telefono,
-        ]);
 
         if (auth()->check()) {
             Bitacora::create([
