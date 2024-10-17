@@ -14,9 +14,18 @@ use Carbon\Carbon;
 
 class InventarioController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $inventarios = Inventario::all();
+        $query = Inventario::query();
+        if ($request->has('from_date') && $request->has('to_date')) {
+            $fromDate = Carbon::parse($request->input('from_date'))->startOfDay();
+            $toDate = Carbon::parse($request->input('to_date'))->endOfDay();
+
+            $query->whereBetween('fecha', [$fromDate, $toDate]);
+        }
+
+        $inventarios = $query->get();
+
         return view('inventarios.index', compact('inventarios'));
     }
 
@@ -46,7 +55,8 @@ class InventarioController extends Controller
             'tipopropiedad_id' => $request->tipopropiedad_id,
             'agente_id' => $request->agente_id,
 
-            'fecha' => Carbon::now(),
+            'fecha' => $request->fecha,  
+      
             // 'tipopropiedad_id' => 'required|exists:tipoPropiedades,id',
             // 'propiedad_id' => 'required|exists:propiedades,id',
 
@@ -174,6 +184,7 @@ class InventarioController extends Controller
         return redirect()->route('inventarios.index')->with('success', 'Propiedad eliminado del inventario exitosamente');
     }
 
+
     public function buscarPorNombre(Request $request)
     {
         $search = $request->input('search');
@@ -231,4 +242,5 @@ class InventarioController extends Controller
         // Retornar la vista con los inventarios filtrados
         return view('inventarios.index', compact('inventarios'));
     }
+
 }
