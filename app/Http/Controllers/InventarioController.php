@@ -168,11 +168,4 @@ class InventarioController extends Controller
         return redirect()->route('inventarios.index')->with('success', 'Propiedad eliminado del inventario exitosamente');
     }
 
-    public function pdf(int $id)
-    {
- 
-        $inventario = Inventario::with(['tipoPropiedad', 'propiedad'])->findOrFail($id);
-
-        return view('inventarios.pdf', compact('inventario'));
-    }
 }
