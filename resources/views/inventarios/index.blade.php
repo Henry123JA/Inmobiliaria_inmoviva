@@ -109,7 +109,7 @@
 
             <div class="block mb-8">
                 @canany(['admin_access', 'agente_access', 'propietario_access'])
-                    <a href="{{ route('propiedades.create') }}"
+                    <a href="{{ route('inventarios.create') }}"
                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Agregar Propiedades al Inventario</a>
                 @endcan
             </div>
