@@ -41,7 +41,7 @@ class InventarioController extends Controller
         $ruta = $request->imagen->storeAs('public/imagenes/inventarios', $nombreImagen);
         $url = Storage::url($ruta);
 
-        Inventario::create([
+        $inven=Inventario::create([
             'propiedad_id' => $request->propiedad_id,
             'tipopropiedad_id' => $request->tipopropiedad_id,
             'agente_id' => $request->agente_id,
@@ -62,7 +62,14 @@ class InventarioController extends Controller
             'imagen' => $url,
 
         ]);
-
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Vinculacion de propiedad',
+                'details' => 'La propiedad ' . $inven->propiedad->nombre . ' ha sido vinculada al inventario',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('inventarios.index')->with('success', 'inventario creado exitosamente');
     }
 
@@ -156,6 +163,14 @@ class InventarioController extends Controller
         $inventario->delete();
         $url = str_replace('storage', 'public', $inventario->imagen);
         storage::delete($url);
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Desvinculacion de propiedad',
+                'details' => 'La propiedad ' . $inventario->propiedad->nombre . ' ha sido desvinculada al inventario',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('inventarios.index')->with('success', 'Propiedad eliminado del inventario exitosamente');
     }
 
