@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ciudad;
+use App\Models\Bitacora;
 
 class CiudadController extends Controller
 {
@@ -47,11 +48,19 @@ class CiudadController extends Controller
             'descripcion.string' => 'La descripción debe ser una cadena de texto.',
         ]);
 
-        Ciudad::create([
+        $ciudad = Ciudad::create([
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
         ]);
 
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Creacion de Ciudad',
+                'details' => 'La ciudad ' . $ciudad->nombre . ' ha sido creada',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('ciudad.index')->with('success', 'Ciudad creada exitosamente.');
     }
 
@@ -64,6 +73,14 @@ class CiudadController extends Controller
     public function show($id)
     {
         $ciudad = Ciudad::findOrFail($id);
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Visualizacion de Ciudad',
+                'details' => 'La ciudad ' . $ciudad->nombre . ' ha sido vista',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return view('ciudad.show', compact('ciudad'));
     }
 
@@ -103,7 +120,14 @@ class CiudadController extends Controller
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
         ]);
-
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Modificacion de Ciudad',
+                'details' => 'La ciudad ' . $ciudad->nombre . ' ha sido modificada',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('ciudad.index')->with('success', 'Ciudad actualizada exitosamente.');
     }
 
@@ -117,7 +141,14 @@ class CiudadController extends Controller
     {
         $ciudad = Ciudad::findOrFail($id);
         $ciudad->delete();
-
+        if (auth()->check()) {
+            Bitacora::create([
+                'action' => 'Eliminacion de Ciudad',
+                'details' => 'La ciudad ' . $ciudad->nombre . ' ha sido eliminada',
+                'user_id' => auth()->user()->id,
+                'ip_address' => request()->ip(),
+            ]);
+        }
         return redirect()->route('ciudad.index')->with('success', 'Ciudad eliminada exitosamente.');
     }
 }
