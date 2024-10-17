@@ -24,7 +24,8 @@
 
             <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8 ">
                 <div class="block mb-8">
-                    @can('admin_access')
+                    @canany(['admin_access','agente_access','propietario_access'])
+
                         <a href="{{ route('propiedades.create') }}"
                             class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Propiedades</a>
                     @endcan
@@ -82,13 +83,14 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     <img src="{{ $propiedad->imagen }}" width="180px">
                                                 </td>
-                                                @canany(['admin_access', 'agente_access'])
+                                                @canany(['admin_access', 'agente_access','propietario_access'])
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                         <a href="{{ route('propiedades.show', $propiedad->id) }}"
                                                             class="text-green-600 hover:text-green-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-eye text-xl"></i>
                                                         </a>
-                                                
+                                                @endcanany
+                                                @can('admin_access')
                                                         <a href="{{ route('propiedades.edit', $propiedad->id) }}"
                                                             class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-edit text-xl"></i>
@@ -104,9 +106,8 @@
                                                                 <i class="fas fa-trash text-xl"></i>
                                                             </button>
                                                         </form>
-                                                    @endcanany
+                                                    @endcan
                                                 </td>
-
                                             </tr>
                                         @endforeach
                                     </tbody>

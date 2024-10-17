@@ -18,6 +18,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\BitacoraController;
 
 use App\Http\Controllers\ArticulosController;
+use App\Http\Controllers\CiudadController;
 use App\Http\Controllers\NotaVentaController;
 use App\Http\Controllers\formularioController;
 use App\Http\Controllers\InventarioController;
@@ -86,10 +87,15 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::resource('clientes', ClientesController::class);
+    
+    //Route::resource('/ciudad', CiudadController::class);
+    Route::resource('/ciudad', CiudadController::class);
 
     // Para Livewire componentes normalmente no se definen de esta manera
     Route::resource('articulos', Articulos::class);
     Route::resource('inventario', ArticulosController::class);
+    Route::get('/buscarpropiedad',[InventarioController::class,'buscarPorNombre'])->name('inventario.buscar');
+    Route::get('/filtrarpropiedad',[InventarioController::class,'filtrarPropiedad'])->name('inventario.filtrar');
     Route::get('/users/{user}/bitacora', [UsersController::class, 'showBitacora'])->name('users.bitacora');
 
     //pagos con stripe

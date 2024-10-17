@@ -8,8 +8,6 @@
         </x-slot>
         <div>
 
-
-            </table>
             @if (session('success'))
                 <div id="success-message"
                     class="fixed top-14 right-5 bg-green-500 text-white text-center py-2 px-4 rounded shadow-lg z-50">
@@ -23,12 +21,50 @@
             </script>
 
             <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8 ">
-                <div class="block mb-8">
-                    @can('admin_access')
-                        <a href="{{ route('inventarios.create') }}"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Propiedades en el Inventario</a>
-                    @endcan
-                </div>
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        @canany(['admin_access', 'agente_access', 'propietario_access'])
+                            <a href="{{ route('inventarios.create') }}"
+                               class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Propiedades en el Inventario</a>
+                        @endcanany
+                    </div>
+                
+                    <!-- Campo de búsqueda -->
+                    <form method="GET" action="{{ route('inventario.buscar') }}" class="flex items-center">
+                        <input type="text" name="search" placeholder="Buscar propiedades..."
+                               class="border border-gray-300 rounded-md py-2 px-4 mr-2" value="{{ request('search') }}">
+                        <button type="submit"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Buscar</button>
+                    </form>
+                <!-- Filtros -->
+                <form method="GET" action="{{ route('inventario.filtrar') }}">
+                    @csrf
+                    <div class="filters mb-6">
+                        <select id="buscapropiedad" name="buscapropiedad" class="form-control mt-2" style="border: #bababa 1px solid; color: #000000;">
+                            <option value="">Tipo de Propiedad</option>
+                            <option value="Todos" {{ request('buscapropiedad') == 'Todos' ? 'selected' : '' }}>Todos</option>
+                            <option value="Casa" {{ request('buscapropiedad') == 'Casa' ? 'selected' : '' }}>Casa</option>
+                            <option value="Apartamento" {{ request('buscapropiedad') == 'Apartamento' ? 'selected' : '' }}>Apartamento</option>
+                            <option value="Terreno" {{ request('buscapropiedad') == 'Terreno' ? 'selected' : '' }}>Terreno</option>
+                            <option value="Local Comercial" {{ request('buscapropiedad') == 'Local Comercial' ? 'selected' : '' }}>Local Comercial</option>
+                            <option value="Oficina" {{ request('buscapropiedad') == 'Alquileres' ? 'selected' : '' }}>Oficina</option>
+                        </select>
+                
+                        <input type="number" id="buscasuperficiedesde" name="buscasuperficiedesde" class="form-control mt-2" style="border: #bababa 1px solid; color: #000000;" placeholder="Superficie desde" value="{{ request('buscasuperficiedesde') }}">
+                        <input type="number" id="buscasuperficiehasta" name="buscasuperficiehasta" class="form-control mt-2" style="border: #bababa 1px solid; color: #000000;" placeholder="Superficie hasta" value="{{ request('buscasuperficiehasta') }}">
+                        <input type="date" id="buscafechadesde" name="buscafechadesde" class="form-control mt-2" style="border: #bababa 1px solid; color: #000000;" value="{{ request('buscafechadesde') }}">
+                        <input type="date" id="buscafechahasta" name="buscafechahasta" class="form-control mt-2" style="border: #bababa 1px solid; color: #000000;" value="{{ request('buscafechahasta') }}">
+                        
+                        <select id="agente" name="agente" class="form-control mt-2" style="border: #bababa 1px solid; agente: #000000;">
+                            <option value="">Estado</option>
+                            <option value="Todos" {{ request('agente') == 'Todos' ? 'selected' : '' }}>Todos</option>
+                            <option value="Disponible" {{ request('agente') == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                        </select>
+                
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Filtrar</button>
+                    </div>
+                </form>
+
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -144,13 +180,14 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     <img src="{{ $inventario->imagen }}" width="290px">
                                                 </td>
-                                                @canany(['admin_access', 'agente_access'])
+                                                @canany(['admin_access', 'agente_access','propietario_access'])
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                         <a href="{{ route('inventarios.show', $inventario->id) }}"
                                                             class="text-green-600 hover:text-green-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-eye text-xl"></i>
                                                         </a>
-                                                
+                                                @endcanany
+                                                @can('admin_access')
                                                         <a href="{{ route('inventarios.edit', $inventario->id) }}"
                                                             class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-edit text-xl"></i>
@@ -166,7 +203,7 @@
                                                                 <i class="fas fa-trash text-xl"></i>
                                                             </button>
                                                         </form>
-                                                    @endcanany
+                                                    @endcan
                                                 </td>
 
                                             </tr>

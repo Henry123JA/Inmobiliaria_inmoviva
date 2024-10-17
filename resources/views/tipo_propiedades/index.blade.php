@@ -8,7 +8,9 @@
     <div>
         <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8">
             <div class="block mb-8">
+                @canany(['admin_access','agente_access','propietario_access'])
                 <a href="{{ route('tipo-propiedades.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                @endcanany
                     <!-- Ícono de añadir -->
                     <svg class="w-5 h-5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
@@ -49,12 +51,17 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-2">
                                                 <!-- Ver (Color verde) -->
+
+                                                @canany(['admin_access','agente_access','propietario_access'])
                                                 <a href="{{ route('tipo-propiedades.show', $tipoPropiedad->id) }}" class="text-green-600 hover:text-green-800" title="Ver detalles">
                                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
                                                     </svg>
                                                 </a>
+                                                @endcanany
+
+                                                @can(['admin_access'])
 
                                                 <!-- Editar (Ícono de lápiz, Color azul) -->
                                                 <a href="{{ route('tipo-propiedades.edit', $tipoPropiedad->id) }}" class="text-blue-600 hover:text-blue-800" title="Editar">
@@ -74,6 +81,7 @@
                                                         </svg>
                                                     </button>
                                                 </form>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
