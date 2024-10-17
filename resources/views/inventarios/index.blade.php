@@ -1,4 +1,4 @@
-<x-app-layout>
+a<x-app-layout>
     <div class="bg-gray-200 min-h-screen">
 
         <x-slot name="header">
@@ -22,11 +22,58 @@
                 }, 2000); // Ocultar el mensaje después de 2 seg
             </script>
 
+
+           
+
+
+
+            {{-- <a href="{{ route('inventarios.pdf', ['id' => $inventarios->id]) }}" class="text-purple-600 hover:text-purple-900 mb-2 mr-2">
+                <i class="fas fa-book text-xl"></i>
+            </a> --}}
+          
+
             <div class="max-w-6xl mx-auto py-10 sm:px-6 lg:px-8 ">
+                <div class="flex justify-end mb-6">
+
+                </div>
                 <div class="block mb-8">
-                    @canany(['admin_access','agente_access','propietario_access'])
+                    <form action="" method="GET" class="max-w-6xl mx-auto sm:px-2 lg:px-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Del Día -->
+                            <div class="flex flex-col items-center">
+                                <label for="from_date" class="text-sm font-medium text-gray-700 mb-1">Del Día</label>
+                                <input type="date" name="from_date" id="from_date"
+                                    value="{{ request()->input('from_date') }}"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+        
+                            <!-- Hasta el Día -->
+                            <div class="flex flex-col items-center">
+                                <label for="to_date" class="text-sm font-medium text-gray-700 mb-1">Hasta el Día</label>
+                                <input type="date" name="to_date" id="to_date" value="{{ request()->input('to_date') }}"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+        
+                            <!-- Botón Buscar -->
+                            <div class="flex items-end ">
+                                <button type="submit"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Buscar
+                                </button>
+                            </div>
+        
+                            <div class="flex items-end ">
+                                <button type="submit" formaction="{{ route('export') }}"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Generar Reporte PDF
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    @canany(['admin_access', 'agente_access', 'propietario_access'])
                         <a href="{{ route('inventarios.create') }}"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Propiedades en el Inventario</a>
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Propiedades
+                            en el Inventario</a>
                     @endcanany
                 </div>
                 <div class="flex flex-col">
@@ -41,23 +88,23 @@
                                                 ID
                                             </th>
                                             <th scope="col" width="100"
-                                                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                 Propiedad
-                                          </th>
-                                          <th scope="col" width="100"
-                                                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                 Tipo de Propiedad
+                                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Propiedad
+                                            </th>
+                                            <th scope="col" width="100"
+                                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Tipo de Propiedad
                                             </th>
 
                                             <th scope="col" width="100"
-                                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                             Agente Asignado
-                                              </th>
+                                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Agente Asignado
+                                            </th>
                                             <th scope="col" width="100"
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Fecha
                                             </th>
-                                             <th scope="col" width="100"
+                                            <th scope="col" width="100"
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Direccion
                                             </th>
@@ -65,15 +112,15 @@
                                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Precio
                                         </th> --}}
-                                         <th scope="col" width="100"
+                                            <th scope="col" width="100"
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Estado
                                             </th>
                                             <th scope="col" width="100"
-                                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Superficie
-                                           </th>
-                                           {{-- <th scope="col" width="100"
+                                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Superficie
+                                            </th>
+                                            {{-- <th scope="col" width="100"
                                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                            Habitaciones
                                            </th>
@@ -144,21 +191,23 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     <img src="{{ $inventario->imagen }}" width="290px">
                                                 </td>
-                                                @canany(['admin_access', 'agente_access','propietario_access'])
+                                                @canany(['admin_access', 'agente_access', 'propietario_access'])
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                         <a href="{{ route('inventarios.show', $inventario->id) }}"
                                                             class="text-green-600 hover:text-green-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-eye text-xl"></i>
                                                         </a>
-                                                @endcanany
-                                                @can('admin_access')
+                                                    @endcanany
+                                                    @can('admin_access')
                                                         <a href="{{ route('inventarios.edit', $inventario->id) }}"
                                                             class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-edit text-xl"></i>
                                                         </a>
+
+
                                                         <form class="inline-block"
-                                                            action="{{ route('inventarios.destroy', $inventario->id) }}" method="POST"
-                                                            id="delete{{ $inventario->id }}">
+                                                            action="{{ route('inventarios.destroy', $inventario->id) }}"
+                                                            method="POST" id="delete{{ $inventario->id }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="button"
@@ -182,6 +231,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function imprimirVentas(periodo) {
+            // Obtener la fecha actual
+            let fecha = new Date();
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1; // Los meses van de 0 a 11 en JavaScript
+            let anio = fecha.getFullYear();
+
+            // Generar la URL para la impresión según el período seleccionado
+            let url = '';
+            if (periodo === 'dia') {
+                url = `{{ route('inventarios.pdf') }}`;
+            } else if (periodo === 'mes') {
+                url = `{{ route('inventarios.pdf') }}`;
+            } else if (periodo === 'anio') {
+                url = `{{ route('inventarios.pdf') }}`;
+            }
+
+            // Abrir la ventana para imprimir
+            window.open(url, '_blank');
+        }
+    </script>
 </x-app-layout>
 
 

@@ -62,6 +62,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     //Route::resource('agentes', AgenteController::class);
     Route::get('/users/propietarios', [UsersController::class, 'propietarios'])->name('users.propietarios');
     // Route::resource('/propiedades', PropiedadController::class);
+    Route::get('/inventarios/pdf', [InventarioController::class, 'pdf'])->name('inventarios.pdf');
 
     
 });
@@ -82,7 +83,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/users/propietarios', [UsersController::class, 'propietarios'])->name('users.propietarios');
     Route::resource('/propiedades', PropiedadController::class);
     Route::resource('/inventarios', InventarioController::class);
-
+ Route::get('/inventarios/pdf', [InventarioController::class, 'pdf'])->name('inventarios.pdf');
+    //Route::get('/inventarios/pdf/', [InventarioController::class, 'pdf'])->where('id', '[0-9]+');
+   // Route::get('/inventarios/{id}', [InventarioController::class, 'show'])->name('inventarios.show');
+  //  Route::get('/inventarios/{id}', [InventarioController::class, 'show'])->where('id', '[0-9]+')->name('inventarios.show');
 
 
     Route::resource('clientes', ClientesController::class);
