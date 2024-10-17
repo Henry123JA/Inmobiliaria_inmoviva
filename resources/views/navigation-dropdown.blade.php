@@ -35,7 +35,9 @@
                     </div>
                 @endcan --}}
                 <!-- Usuarios Dropdown -->
-                @can('admin_access')
+                {{-- @canany(['admin_access','cliente_access']) --}}
+
+                @canany(['admin_access','agente_access','propietario_access'])
                     <div class="hidden sm:flex sm:items-center sm:ml-10">
                         <x-jet-dropdown align="left">
                             <x-slot name="trigger">
@@ -69,9 +71,9 @@
                             </x-slot>
                         </x-jet-dropdown>
                     </div>
-                @endcan
+                @endcanany
 
-                @can('admin_access')
+                @canany(['admin_access','agente_access','propietario_access'])
                     <div class="hidden sm:flex sm:items-center sm:ml-10">
                         <x-jet-dropdown align="left">
                             <x-slot name="trigger">
@@ -108,7 +110,7 @@
                 @endcan
 
               <!-- Formulario Dropdown -->   
-                @canany(['admin_access','cliente_access'])
+                @canany(['admin_access','cliente_access','propietario_access','agente_access'])
                     <div class="hidden sm:flex sm:items-center sm:ml-10">
                         <x-jet-dropdown align="left">
                             <x-slot name="trigger">
@@ -375,6 +377,14 @@
                 </x-jet-responsive-nav-link>
             </div>
         @endcan
+
+        @can('admin_access')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('users.propietarios') }}" :active="request()->routeIs('users.*')">
+                Propietarios
+            </x-jet-responsive-nav-link>
+        </div>
+    @endcan
         {{-- 
         @can('user_access')
             <div class="pt-2 pb-3 space-y-1">
@@ -391,6 +401,14 @@
                 </x-jet-responsive-nav-link>
             </div>
         @endcan
+
+        @can('admin_access')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('propiedades.index') }}" :active="request()->routeIs('propiedades*.')">
+                Propiedades
+            </x-jet-responsive-nav-link>
+        </div>
+    @endcan
         @can('admin_access')
         <div class="pt-2 pb-3 space-y-1">
             <x-jet-responsive-nav-link href="{{ route('inventarios.index') }}" :active="request()->routeIs('inventarios*.')">
@@ -400,13 +418,9 @@
     @endcan
 
 
-        @can('admin_access')
-        <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('users.propietarios') }}" :active="request()->routeIs('users.*')">
-                Propietarios
-            </x-jet-responsive-nav-link>
-        </div>
-    @endcan
+
+
+
         
         @can('admin_access')
             <div class="pt-2 pb-3 space-y-1">

@@ -36,8 +36,6 @@
                         <button type="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Buscar</button>
                     </form>
-                </div>
-                
                 <!-- Filtros -->
                 <form method="GET" action="{{ route('inventario.filtrar') }}">
                     @csrf
@@ -182,13 +180,14 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     <img src="{{ $inventario->imagen }}" width="290px">
                                                 </td>
-                                                @canany(['admin_access', 'agente_access'])
+                                                @canany(['admin_access', 'agente_access','propietario_access'])
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                         <a href="{{ route('inventarios.show', $inventario->id) }}"
                                                             class="text-green-600 hover:text-green-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-eye text-xl"></i>
                                                         </a>
-                                                
+                                                @endcanany
+                                                @can('admin_access')
                                                         <a href="{{ route('inventarios.edit', $inventario->id) }}"
                                                             class="text-indigo-600 hover:text-indigo-900 mb-2 mr-2">
                                                             <i class="fa-solid fa-edit text-xl"></i>
@@ -204,7 +203,7 @@
                                                                 <i class="fas fa-trash text-xl"></i>
                                                             </button>
                                                         </form>
-                                                    @endcanany
+                                                    @endcan
                                                 </td>
 
                                             </tr>
